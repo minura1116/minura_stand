@@ -7,6 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Ficheiro de connexão à base de dados.
+ * 
+ * Criado por:
+ * @author Minura Enterprise
+ *
+ */
+
 public class DBConn {
 	
 	private static String JDBC_porta	= "3306";
@@ -19,6 +27,11 @@ public class DBConn {
 	private static String JDBC_url		= "jdbc:mysql://"+JDBC_server+":"+JDBC_porta+"/";
 	
 	
+	/**
+	 * Metodo que cria a função e devolve uma conexão à base de dados
+	 * @return Connection
+	 * @throws Exception
+	 */
 	public static Connection createConnection() throws Exception {
 		Connection 	conn = null;
 		Connection	con = null;
@@ -30,8 +43,11 @@ public class DBConn {
 			
 			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(JDBC_url, JDBC_username, JDBC_password);
+			
+			//Verifica se a base de dados existe, se NÃO existir ele vai criar a base de dados.
 			checkData = checkDatabase(conn, JDBC_database);
 			conn.close();
+			
 			conn = null;
 			con = DriverManager.getConnection(checkData, JDBC_username, JDBC_password);
 			
@@ -50,6 +66,18 @@ public class DBConn {
 		return null;
 	}
 	
+	/**
+	 * Verifica se existe a base de dados.
+	 * Caso a base de dados não exista, ele vai criar essa mesma base de dados.
+	 * 
+	 * Recebe como parametros, uma conexão e o nome da base de dados.
+	 * Vai devolver uma string que na realidade é a conexão reformulada com a base de dados.
+	 * 
+	 * @param con
+	 * @param db_name
+	 * @return String
+	 * @throws Exception
+	 */
 	public static String checkDatabase(Connection con, String db_name) throws Exception{
 		
 		boolean exists 	= false;
@@ -90,6 +118,16 @@ public class DBConn {
 		
 		return null;
 	}
+	
+	/**
+	 * Metodo que cria a tabela na base de dados.
+	 * 
+	 * Recebe como parametros, uma conexão e uma query(String).
+	 * 
+	 * @param con
+	 * @param query
+	 * @throws Exception
+	 */
 	public static void createTable(Connection con, String query) throws Exception{
 		
 		PreparedStatement stmt = null;
@@ -120,6 +158,16 @@ public class DBConn {
 			}
 		}
 	}
+	
+	/**
+	 * Metodo que insere numa tabela.
+	 * 
+	 * Recebe como parametros uma conexão e uma query(string).
+	 * 
+	 * @param con
+	 * @param query
+	 * @throws Exception
+	 */
 	public static void insertIntoTable(Connection con, String query) throws Exception {
 
 		Statement stmt = null;
